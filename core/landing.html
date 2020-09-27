@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <script>
+        function onFileChange() {
+            let file = document.getElementById('customFile').files[0];
+            let domFile = document.getElementById('filename');
+            domFile.innerText = file.name;
+        }
+
+        function UploadFile() {
+            let successContainer = document.getElementById('successMsg');
+            let failedContainer = document.getElementById('failedMsg');
+            let spinner = document.getElementById('spinner');
+
+            let file = document.getElementById('customFile').files[0];
+            if (!file)
+                alert('Please select a file before clicking the button.');
+            else {
+                spinner.style.opacity = '1';  //show spinner until server response
+
+                let data = new FormData();
+                data.append("file", file);
+                fetch("/drive/upload/",
+                    {
+                        method: "POST",
+                        body: data
+                    })
+                    .then(function (res) {
+                        return res.json();
+                    })
+                    .then(function (data) {
+                        console.log(data);
+
+                        spinner.style.opacity = '0';  //hide spinner after server response
+                        successContainer.style.opacity = '1'; //show success alert
+                        successContainer.innerText = data.message;    //append response
+
+                    }).catch((err) => {
+                    spinner.style.opacity = '0';  //hide spinner after server response
+                    failedContainer.style.opacity = '1'; //show failed alert
+                    failedContainer.innerText = 'Failed to authenticate and upload data. Please close this window and retry.';    //append response
+                })
+            }
+        }
+    </script>
+    <title>Assignment 02 | SSD</title>
+    <link rel="stylesheet" href="/styles.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <div class="d-flex justify-content-center">
+        <h4 style="font-family: 'Raleway', sans-serif;">OAuth 2.0 Demo Application | Upload Files to Google Drive</h4>
+    </div>
+    <div class="mt-4 d-flex justify-content-center">
+        <img src="/img/granted.png" height="400" alt="Google Drive OAuth banner"/>
+    </div>
+    <div class="row mt-4">
+        <div class="col-sm mt-3" style="text-align: center">
+            File to be uploaded:
+        </div>
+        <div class="col-sm">
+            <div class="form-file col-md-8 mt-3">
+                <input onchange="onFileChange()" type="file" class="form-file-input" id="customFile">
+                <label class="form-file-label" for="customFile">
+                    <span id="filename" class="form-file-text">Choose file...</span>
+                    <span class="form-file-button">Browse</span>
+                </label>
+            </div>
+        </div>
+        <div class="container">
+            <div id="spinner" style="opacity: 0" class="sk-folding-cube">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+        </div>
+        <div class="mt-3 d-flex justify-content-center">
+            <div class="col-md-5">
+                <button class="btn btn-primary btn-block" onclick="UploadFile()">Upload</button>
+            </div>
+        </div>
+        <div id="successMsg" style="opacity: 0" class="alert alert-success mt-3"></div>
+        <div id="failedMsg" style="opacity: 0" class="alert alert-danger mt-3"></div>
+    </div>
+</div>
+</body>
+</html>

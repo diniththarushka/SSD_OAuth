@@ -1,0 +1,23 @@
+{
+  "name": "ssdassignment",
+  "version": "1.0.0",
+  "description": "Assignment 02 for SSD | Google Drive uploader with OAuth 2.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["Security","OAuth","Google","Cloud","Drive","Crypto","Express"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "connect-busboy": "0.0.2",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "express-session": "1.17.1",
+    "googleapis": "60.0.1",
+    "nodemon": "2.0.4",
+    "request": "2.88.2"
+  }
+}
