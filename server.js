@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const busboy = require('connect-busboy');
-const session = require("express-session");
+const session = require('express-session');
 const routing = require('./routes');
 
 const PORT = process.env.PORT || 4000;
@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/core'));
 app.use(
     session({
-        secret: "secret123",    //sample secret code
+        secret: 'secret123',    //sample secret code
         resave: true,
         saveUninitialized: true
     })

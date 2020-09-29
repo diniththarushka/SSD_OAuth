@@ -34,11 +34,15 @@
                     })
                     .then(function (data) {
                         console.log(data);
-
-                        spinner.style.opacity = '0';  //hide spinner after server response
-                        successContainer.style.opacity = '1'; //show success alert
-                        successContainer.innerText = data.message;    //append response
-
+                        if(data.status==="success"){
+                            spinner.style.opacity = '0';  //hide spinner after server response
+                            successContainer.style.opacity = '1'; //show success alert
+                            successContainer.innerText = data.message;    //append response
+                        }else{
+                            spinner.style.opacity = '0';  //hide spinner after server response
+                            failedContainer.style.opacity = '1'; //show failed alert
+                            failedContainer.innerText = 'Failed to authenticate and upload data. Please close this window and retry.';    //append response
+                        }
                     }).catch((err) => {
                     spinner.style.opacity = '0';  //hide spinner after server response
                     failedContainer.style.opacity = '1'; //show failed alert
@@ -47,7 +51,7 @@
             }
         }
     </script>
-    <title>Assignment 02 | SSD</title>
+    <title>Assignment 02 | SSD | Upload</title>
     <link rel="stylesheet" href="/styles.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
 </head>

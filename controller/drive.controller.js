@@ -1,6 +1,5 @@
 const express = require('express');
 const {google} = require('googleapis');
-const request = require('request');
 const router = express.Router();
 
 const oauth2Client = require('./auth')
@@ -13,9 +12,9 @@ var drive = google.drive({
     auth: oauth2Client
 });
 
+// assign tokens based on token set event
 oauth2Client.on('tokens', (tokens) => {
     if (tokens.refresh_token) {
-        // store the refresh_token in my database!
         refresh_token = tokens.refresh_token;
     }
     access_token = tokens.access_token;
@@ -25,6 +24,7 @@ oauth2Client.on('tokens', (tokens) => {
     };
 });
 
+// Endpoint for file uploads
 router.post('/upload', (req, res) => {
     req.pipe(req.busboy);
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
@@ -40,6 +40,7 @@ router.post('/upload', (req, res) => {
         }).then(() => {
             res.status(200).json({status: 'success', message: 'File is uploaded to the Drive'});
         }).catch((err) => {
+            console.log(err);
             res.status(500).json({status: 'failed', message: err});
         })
     });
